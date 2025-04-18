@@ -42,3 +42,6 @@ build/
 ### Log files ###
 *.log
 test-logs/
+
+### application.properties ###
+src/main/resources/
