@@ -1,16 +1,18 @@
 package com.liamboston.weatherapi;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 @Service
 public class WeatherService {
-    private static final String API_KEY = "C6RYG2CVQMRPTFH5VMRSA5FXL";
+    @Value("${weather.api.key}")
+    private String apiKey;
     private static final String BASE_URL = "https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/";
 
     public String getWeather(String country) {
-        String url = BASE_URL + country + "/?key=" + API_KEY;
+        String url = BASE_URL + country + "/?key=" + apiKey;
 
         // Using RestTemplate to make HTTP Request
         RestTemplate restTemplate = new RestTemplate();
