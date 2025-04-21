@@ -1,30 +1,30 @@
 package com.liamboston.weatherapi;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.util.List;
+
 public class Day {
-    private String dateTime;
-    private double tempmax;
+    @JsonProperty("datetime")
+    private String datetime;
+    @JsonProperty("tempmin")
     private double tempmin;
-    private double feelslike;
-    private double humidity;
-    private double precip;
-    private double precipProp;
-    private String precipType;
+    @JsonProperty("tempmax")
+    private double tempmax;
+    @JsonProperty("preciptype")
+    private List<String> preciptype;
+    @JsonProperty("precipprob")
+    private double precipprob;
+    @JsonProperty("description")
+    private String description;
 
-    // Getters and setters
-    public String getDateTime() {
-        return dateTime;
+    // Getters and Setters
+    public String getDatetime() {
+        return datetime;
     }
 
-    public void setDateTime(String dateTime) {
-        this.dateTime = dateTime;
-    }
-
-    public double getTempmax() {
-        return tempmax;
-    }
-
-    public void setTempmax(double tempmax) {
-        this.tempmax = tempmax;
+    public void setDatetime(String datetime) {
+        this.datetime = datetime;
     }
 
     public double getTempmin() {
@@ -35,48 +35,44 @@ public class Day {
         this.tempmin = tempmin;
     }
 
-    public double getFeelslike() {
-        return feelslike;
+    public double getTempmax() {
+        return tempmax;
     }
 
-    public void setFeelslike(double feelslike) {
-        this.feelslike = feelslike;
+    public void setTempmax(double tempmax) {
+        this.tempmax = tempmax;
     }
 
-    public double getHumidity() {
-        return humidity;
+    public double getPrecipprob() {
+        return precipprob;
     }
 
-    public void setHumidity(double humidity) {
-        this.humidity = humidity;
+    public void setPrecipprob(double precipprob) {
+        this.precipprob = precipprob;
     }
 
-    public double getPrecip() {
-        return precip;
+    public List<String> getPreciptype() {
+        return preciptype;
     }
 
-    public void setPrecip(double precip) {
-        this.precip = precip;
+    public void setPreciptype(List<String> preciptype) {
+        this.preciptype = preciptype;
     }
 
-    public String getPrecipType() {
-        return precipType;
+    public String getDescription() {
+        return description;
     }
 
-    public void setPrecipType(String precipType) {
-        this.precipType = precipType;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
-    public double getPrecipProp() {
-        return precipProp;
-    }
-
-    public void setPrecipProp(double precipProp) {
-        this.precipProp = precipProp;
-    }
-
-    // Helper method to format the message like: "With a high of 78°F and low of 48°F"
-    public String getTempMessage() {
-        return String.format("With a high of %.1f°F and low of %.1f°F", tempmax, tempmin);
+    @Override
+    public String toString() {
+        return "<b>" + datetime + "</b><br>" +
+                "<b>Forecast: </b>" + description + "<br>" +
+                "<b>Low: </b>" + tempmin + "<b>° | High: </b>" + tempmax + "<b>°</b><br>" +
+                "<b>Precipitation: </b>" + (preciptype != null && !preciptype.isEmpty() ? String.join(", ", preciptype) : "None") +
+                "<b> | Probability: </b>" + precipprob + "%.<br><br>";
     }
 }
