@@ -58,7 +58,7 @@ public class Weather {
                 .append("<br><br>");
 
         if (days != null && !days.isEmpty()) {
-            sb.append("<b><u>15-day forecast:</u></b><br>");
+            sb.append("<b><u>7-day forecast:</u></b><br>");
             for (Day day : days) {
                 sb.append(day.toString()).append("<br>");
             }

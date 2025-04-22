@@ -20,13 +20,17 @@ public class WeatherService {
         RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
 
-//        return response.getBody();
         // Parse the JSON response to a Weather object using Jackson
         try {
             ObjectMapper mapper = new ObjectMapper();
             mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
             Weather weather = mapper.readValue(response.getBody(), Weather.class);
-            System.out.println("Weather data fetched: " + weather);
+
+            // Limit forecast to 7-days
+            if (weather.getDays() != null && weather.getDays().size() > 7) {
+                weather.setDays(weather.getDays().subList(0, 7)); // take only the first 7 days
+            }
+
             return weather.toString();
         } catch (Exception ex) {
             ex.printStackTrace();
