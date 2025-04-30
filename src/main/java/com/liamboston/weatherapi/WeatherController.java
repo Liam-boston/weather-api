@@ -10,8 +10,8 @@ public class WeatherController {
     @Autowired
     private WeatherService weatherService;
 
-    @GetMapping("/weather/{country}")
-    public String getWeather(@PathVariable String country) {
-        return weatherService.getWeather(country);
+    @GetMapping("/weather/{location}")
+    public String getWeather(@PathVariable String location) {
+        return weatherService.getWeatherByLocation(location);
     }
 }

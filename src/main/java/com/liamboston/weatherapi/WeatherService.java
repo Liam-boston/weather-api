@@ -22,16 +22,16 @@ public class WeatherService {
     private RedisTemplate<String, String> redisTemplate;
 
     @Cacheable(value="weather", key="#country", cacheManager = "cacheManager")
-    public String getWeather(String country) {
+    public String getWeatherByLocation(String location) {
         // Check redis for cached weather results
-        String cachedWeather = redisTemplate.opsForValue().get(country);
+        String cachedWeather = redisTemplate.opsForValue().get(location);
 
         if (cachedWeather != null) {
-            System.out.println("Cache hit for " + country);
+            System.out.println("Cache hit for " + location);
             return cachedWeather;
         }
 
-        String url = BASE_URL + country + "/?key=" + apiKey;
+        String url = BASE_URL + location + "/?key=" + apiKey;
 
         // Using RestTemplate to make HTTP Request
         RestTemplate restTemplate = new RestTemplate();
@@ -50,9 +50,9 @@ public class WeatherService {
 
             // Cache the result
             String result = weather.toString();
-            redisTemplate.opsForValue().set(country, result, Duration.ofHours(12));
+            redisTemplate.opsForValue().set(location, result, Duration.ofHours(12));
 
-            System.out.println("Weather data fetched and cached for " + country);
+            System.out.println("Weather data fetched and cached for " + location);
             return result;
         } catch (Exception ex) {
             ex.printStackTrace();
