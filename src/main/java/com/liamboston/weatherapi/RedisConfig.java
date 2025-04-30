@@ -1,5 +1,6 @@
 package com.liamboston.weatherapi;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.CacheManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,13 +16,22 @@ import java.time.Duration;
 
 @Configuration
 public class RedisConfig {
+    @Value("${spring.data.redis.host}")
+    private String redisHost;
+
+    @Value("${spring.data.redis.port}")
+    private int redisPort;
+
+    @Value("${spring.data.redis.password}")
+    private String redisPassword;
+
     @Bean
     public RedisConnectionFactory redisConnectionFactory() {
         RedisStandaloneConfiguration redisConfig = new RedisStandaloneConfiguration();
-        redisConfig.setHostName("redis-16985.c15.us-east-1-2.ec2.redns.redis-cloud.com");
-        redisConfig.setPort(16985);
+        redisConfig.setHostName(redisHost);
+        redisConfig.setPort(redisPort);
         redisConfig.setUsername("default");
-        redisConfig.setPassword("b7wxIxlz4J3BnC5AfSsB2VN8ZqfHprId");
+        redisConfig.setPassword(redisPassword);
 
         return new LettuceConnectionFactory(redisConfig);
     }
