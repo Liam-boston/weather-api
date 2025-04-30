@@ -4,10 +4,13 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+
+import java.time.Duration;
 
 @Service
 public class WeatherService {
@@ -18,6 +21,7 @@ public class WeatherService {
     @Autowired
     private RedisTemplate<String, String> redisTemplate;
 
+    @Cacheable(value="weather", key="#country", cacheManager = "cacheManager")
     public String getWeather(String country) {
         // Check redis for cached weather results
         String cachedWeather = redisTemplate.opsForValue().get(country);
@@ -46,7 +50,7 @@ public class WeatherService {
 
             // Cache the result
             String result = weather.toString();
-            redisTemplate.opsForValue().set(country, result);
+            redisTemplate.opsForValue().set(country, result, Duration.ofHours(12));
 
             System.out.println("Weather data fetched and cached for " + country);
             return result;
