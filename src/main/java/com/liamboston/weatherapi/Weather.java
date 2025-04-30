@@ -58,10 +58,16 @@ public class Weather {
                 .append("<br><br>");
 
         if (days != null && !days.isEmpty()) {
-            sb.append("<b><u>7-day forecast:</u></b><br>");
+            sb.append("<b><u style='display: inline-block; margin-bottom: 0;'>7-day forecast:</u></b><br>");
+            sb.append("<div style='display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; padding: 0rem 1rem 1rem 0rem; justify-items: start;'>");
+
             for (Day day : days) {
-                sb.append(day.toString()).append("<br>");
+                sb.append("<div style='vertical-align: top; min-width: 200px; padding-bottom: 1rem;'>")
+                        .append(day.toString())
+                        .append("</div>");
             }
+
+            sb.append("</div>");
         } else {
             sb.append("No daily forecast available.");
         }

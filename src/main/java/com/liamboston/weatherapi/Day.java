@@ -89,6 +89,6 @@ public class Day {
                 "<b>Forecast: </b>" + description + "<br>" +
                 "<b>Low: </b>" + tempmin + "<b>° | High: </b>" + tempmax + "<b>°</b><br>" +
                 "<b>Precipitation: </b>" + (preciptype != null && !preciptype.isEmpty() ? String.join(", ", preciptype) : "None") +
-                "<b> | Probability: </b>" + precipprob + "%.<br><br>";
+                "<b> | Probability: </b>" + precipprob + "%.";
     }
 }
