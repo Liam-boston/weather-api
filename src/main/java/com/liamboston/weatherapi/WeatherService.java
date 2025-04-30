@@ -2,7 +2,9 @@ package com.liamboston.weatherapi;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -13,7 +15,18 @@ public class WeatherService {
     private String apiKey;
     private static final String BASE_URL = "https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/";
 
+    @Autowired
+    private RedisTemplate<String, String> redisTemplate;
+
     public String getWeather(String country) {
+        // Check redis for cached weather results
+        String cachedWeather = redisTemplate.opsForValue().get(country);
+
+        if (cachedWeather != null) {
+            System.out.println("Cache hit for " + country);
+            return cachedWeather;
+        }
+
         String url = BASE_URL + country + "/?key=" + apiKey;
 
         // Using RestTemplate to make HTTP Request
@@ -31,7 +44,12 @@ public class WeatherService {
                 weather.setDays(weather.getDays().subList(0, 7)); // take only the first 7 days
             }
 
-            return weather.toString();
+            // Cache the result
+            String result = weather.toString();
+            redisTemplate.opsForValue().set(country, result);
+
+            System.out.println("Weather data fetched and cached for " + country);
+            return result;
         } catch (Exception ex) {
             ex.printStackTrace();
             return "ERROR FETCHING WEATHER DATA";
