@@ -8,9 +8,6 @@ This project is a solution to the *Weather API Wrapper Service* challenge on [Ro
 In this project, we will build a weather API that fetches and returns weather data from a 3rd-party API (e.g., [Visual Crossing's](https://www.visualcrossing.com/)). The challenge encourages developers to implement a caching layer with [Redis](https://redis.io/) to reduce the number of external API calls made and improve performance, particularly by caching responses based on user-entered city codes.
 *- Adapted from Roadmap.sh*
 
-&nbsp;
-&nbsp;
-
 ## Solution Overview
 This Spring Boot application implements a solution to the challenge, including the following features:
 - Retrieves a 7-day weather forecast for a user-provided location from the [Visual Crossing Weather API](https://www.visualcrossing.com/weather-api/).
